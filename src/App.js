@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useRef } from 'react';
+import { Editor } from '@toast-ui/react-editor'
+import matter from 'gray-matter'
+import moment from 'moment'
 import './App.css';
 
 function App() {
+  const toastRef = useRef()
+
+  const initialTemplate = `---
+title:
+date: ${moment().format('YYYY-MM-DD HH:MM:SS')}
+tags:
+category: 
+---`
+
+  const handleSave = () => {
+    const markdown = toastRef.current.getInstance().getMarkdown()
+    const { data } = matter(markdown)
+    const a = document.createElement('a')
+    const file = new Blob([markdown], { type: 'text/plain' })
+    a.href = window.URL.createObjectURL(file)
+    a.download = `${data.title}.md`
+    document.body.appendChild(a)
+    a.click()
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='editor-wrapper'>
+      <Editor
+        previewStyle="vertical"
+        height="100vh"
+        initialEditType="markdown"
+        initialValue={initialTemplate}
+        ref={toastRef}
+      />
+      <button className='save-btn' onClick={handleSave}>Save</button>
     </div>
   );
 }
