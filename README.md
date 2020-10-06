@@ -16,6 +16,8 @@ yarn start
 
 ### Dependencies
 [@toast-ui/editor](https://www.npmjs.com/package/@toast-ui/editor)
+[moment](https://www.npmjs.com/package/moment)
+[gray-matter](https://www.npmjs.com/package/gray-matter)
 
 ### license
 MIT
